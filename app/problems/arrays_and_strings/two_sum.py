@@ -2,15 +2,15 @@ from collections import defaultdict
 
 
 def two_sum(nums, target):
-    complements = defaultdict(list)
+    pairs = defaultdict(int)
 
     for index, x in enumerate(nums):
         y = target - x
 
-        if x in complements:
-            idx, x = complements[x]
+        if x in pairs:
+            idx = pairs[x]
             return [idx, index]
-        complements[y].extend([index, x])
+        pairs[y] = index
 
 
 if __name__ == '__main__':
