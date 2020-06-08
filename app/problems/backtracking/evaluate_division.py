@@ -1,37 +1,47 @@
 from collections import defaultdict, deque
 
 
-def calc_equation(equations, values, queries):
+def build_graph(equations, values):
     graph = defaultdict(list)
 
-    def build_graph(equations, values):
-        for vertices, value in zip(equations, values):
-            f, t = vertices
-            graph[f].append((t, value))
-            graph[t].append((f, 1/value))
+    for equation, value in zip(equations, values):
+        top, bottom = equation
+        graph[top].append((bottom, value))
+        graph[bottom].append((top, 1/value))
 
-    def find_path(query):
-        b, e = query
+    return graph
 
-        if b not in graph or e not in graph:
-            return -1.0
 
-        q = deque([(b, 1.0)])
-        visited = set()
+def find_path(graph, query):
+    start, end = query
 
-        while q:
-            front, cur_product = q.popleft()
-            if front == e:
-                return cur_product
-            visited.add(front)
-            for neighbor, value in graph[front]:
-                if neighbor not in visited:
-                    q.append((neighbor, cur_product*value))
-
+    if start not in graph or end not in graph:
         return -1.0
 
-    build_graph(equations, values)
-    return [find_path(q) for q in queries]
+    if start == end:
+        return 1.0
+
+    queue = deque([(start, 1.0)])
+    visited = set()
+
+    while queue:
+        node, cur_product = queue.pop()
+        if node == end:
+            return cur_product
+
+        if node not in visited:
+            visited.add(node)
+            neighbours = graph[node]
+
+            for neighbour, edge in neighbours:
+                queue.appendleft((neighbour, cur_product * edge))
+
+    return -1.0
+
+
+def calc_equation(equations, values, queries):
+    graph = build_graph(equations, values)
+    return [find_path(graph, q) for q in queries]
 
 
 if __name__ == '__main__':
