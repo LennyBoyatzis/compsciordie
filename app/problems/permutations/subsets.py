@@ -2,7 +2,9 @@ def calc_subsets(nums):
     output = [[]]
 
     for num in nums:
-        output += [curr + [num] for curr in output]
+        for subset in output:
+            print(f'subset {subset}')
+            output.append(subset + [num])
 
     return output
 
