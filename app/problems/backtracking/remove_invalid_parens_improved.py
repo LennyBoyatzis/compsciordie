@@ -6,6 +6,8 @@ def remove_invalid_parens(s):
         nonlocal ans
         nonlocal min_removed
 
+        print(f'what is the expression {id(expr)}')
+
         if index == len(s):
             if open_count == close_count:
                 if rem_count <= min_removed:
@@ -21,7 +23,8 @@ def remove_invalid_parens(s):
             if current_char not in ['(', ')']:
                 expr.append(current_char)
                 backtrack(s, index + 1, open_count, close_count, expr, rem_count)
-                expr.pop()
+                result = expr.pop()
+                print(f'result {result}')
             else:
                 backtrack(s, index + 1, open_count, close_count, expr, rem_count + 1)
                 expr.append(current_char)
@@ -31,7 +34,8 @@ def remove_invalid_parens(s):
                 elif close_count < open_count:
                     backtrack(s, index + 1, open_count, close_count + 1, expr, rem_count)
 
-                expr.pop()
+                result = expr.pop()
+                print(f'result 2 {result}')
     backtrack(s, 0, 0, 0, [], 0)
     return list(ans)
 
