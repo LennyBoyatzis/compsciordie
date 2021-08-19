@@ -24,4 +24,6 @@ def runLengthEncoding(text: str) -> str:
 		
 		if i == len(text) - 1:
 			ans += encode_text(text[i+1-repeat_seq_count:i+1])
+    
+	ans += encode_text(text[len(text)-repeat_seq_count:])
 	return ans
