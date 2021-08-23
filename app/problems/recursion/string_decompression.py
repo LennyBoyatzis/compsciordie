@@ -1,5 +1,3 @@
-
-
 def decompress_string(text: str) -> str:
     """Decompresses string"""
     stack = []
