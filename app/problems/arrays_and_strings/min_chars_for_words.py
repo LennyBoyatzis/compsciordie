@@ -21,7 +21,6 @@ def min_chars_for_words(words):
     return ans
 
 
-
 if __name__ == '__main__':
     words = ['this', 'that', 'did', 'deed', 'them!', 'a']
     res = min_chars_for_words(words)
