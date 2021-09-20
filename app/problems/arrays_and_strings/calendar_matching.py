@@ -1,76 +1,101 @@
 from typing import List
 
 
-Time = str
-Meeting = List[Time]
-Bounds = List[Time]
-Calendar = List[Meeting]
+def add_cal_bounds(cal, bounds):
+    start, end = bounds
+    cal.insert(0, ['0:00', start])
+    cal.append([end, '23:59'])
+    return cal
 
 
-def merge_intervals(c1: Calendar, c2: Calendar) -> Calendar:
-    """Merges two calendars together and returns as output"""
+def merge_cals(c1, c2):
     merged = []
     p1, p2 = 0, 0
-    c1_size, c2_size = len(c1), len(c2)
 
-    while p1 < c1_size and p2 < c2_size:
-        if c1[p1][0] <= c2[p2][0]:
-            if not merged:
-                merged.append(c1[0])
-            else:
-                if c1[[p1]][0] < merged
+    while p1 < len(c1) and p2 < len(c2):
+        next_c1, next_c2 = c1[p1], c2[p2]
+
+        if next_c1[0] <= next_c2[0]:
+            merged.append(next_c1)
             p1 += 1
         else:
-            merged.append(c2[0])
+            merged.append(next_c2)
             p2 += 1
 
+    if p1 < len(c1):
+        merged.extend(c1[p1:])
 
-def time_to_mins(time: Time) -> int:
-    """Converts 24hr time string to minutes from 00:00"""
-    hours, mins = [int(part) for part in time.split(':')]
-    return hours * 60 + mins
+    if p2 < len(c2):
+        merged.extend(c2[p2:])
+
+    return merged
 
 
-def mins_to_time(mins: int) -> Time:
-    """Converts mins to 24hr time string"""
-    hrs, mins = divmod(mins, 60)
+def flatten(merged_cal):
+    flat_cal = [merged_cal[0]]
+
+    for i in range(1, len(merged_cal)):
+        prev_start, prev_end = flat_cal[-1]
+        next_start, next_end = merged_cal[i]
+
+        if next_start <= prev_end:
+            flat_cal[-1] = [prev_start, max(prev_end, next_end)]
+        else:
+            flat_cal.append([next_start, next_end])
+    return flat_cal
+
+
+def convert_time_to_int(time_str):
+    hours, mins = time_str.split(':')
+    return int(hours) * 60 + int(mins)
+
+def convert_int_to_time(int):
+    hours, mins = divmod(int, 60)
     mins_prefix = '0' if mins < 10 else ''
-    return f'{hrs}:{mins_prefix}{mins}'
+    return f'{hours}:{mins_prefix}{mins}'
+
+def convert_cal_to_ints(cal):
+    return [[convert_time_to_int(start),
+             convert_time_to_int(end)] for start, end in cal]
+
+def convert_cal_to_time(cal):
+    return [[convert_int_to_time(start),
+             convert_int_to_time(end)] for start, end in cal]
+
+def get_free_time(flat_cal, duration):
+    free_time = []
+
+    for i in range(1, len(flat_cal)):
+        prev_start, prev_end = flat_cal[i-1]
+        next_start, next_end = flat_cal[i]
+
+        # 60 mins interval
+        # 15 mins duration
+        interval = next_start - prev_end
+        chunks = interval // duration
+        current = prev_end
+
+        for i in range(chunks):
+            free_time.append([current, current+duration])
+            current += duration
+
+    return free_time
 
 
-def split_by_duration(start: Time, end: Time, duration: int) -> Calendar:
-    """Splits time block into intervals of duration"""
-    start_mins, end_mins = time_to_mins(start), time_to_mins(end)
-    intervals = []
+def calendar_matching(c1, db1, c2, db2, duration):
+    c1 = add_cal_bounds(c1, db1)
+    c2 = add_cal_bounds(c2, db2)
 
-    for i in range(start_mins, end_mins, duration):
-        intervals.append([i, i+duration])
-    
-    return intervals
+    c1 = convert_cal_to_ints(c1)
+    c2 = convert_cal_to_ints(c2)
 
+    merged_cal = merge_cals(c1, c2)
+    flat_cal = flatten(merged_cal)
 
-def convert_meeting_to_mins(meeting: Meeting) -> Meeting:
-    """Converts a meeting to minutes"""
+    free_time = get_free_time(flat_cal, duration)
+    free_time = convert_cal_to_time(free_time)
 
-
-def calendar_matching(c1, db1, c2, db2) -> Calendar:
-    """Finds available time slots between 2 calendars"""
-
-    c1_mins, c2_mins = [], []
-
-    for meeting in c1:
-        start_time, end_time = meeting 
-        c1_mins.append([time_to_mins(start_time), time_to_mins(end_time)])
-
-    for meeting in c2:
-        start_time, end_time = meeting
-        c2_mins.append([time_to_mins(start_time), time_to_mins(end_time)])
-
-    print(f'c1_mins {c1_mins}')
-    print(f'c2_mins {c2_mins}')
-    # test = split_by_duration('9:00', '16:00', 30)
-    test = merge_intervals(c1_mins, c2_mins)
-    print(f'test {test}')
+    return free_time
 
 
 if __name__ == '__main__':
@@ -89,6 +114,6 @@ if __name__ == '__main__':
 
     db2 = ["10:00", "18:30"]
 
-    duration = 30
+    duration = 30 
 
-    res = calendar_matching(c1, db1, c2, db2)
+    res = calendar_matching(c1, db1, c2, db2, duration)
