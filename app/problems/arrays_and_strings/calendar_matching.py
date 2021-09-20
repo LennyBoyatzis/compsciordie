@@ -69,15 +69,10 @@ def get_free_time(flat_cal, duration):
         prev_start, prev_end = flat_cal[i-1]
         next_start, next_end = flat_cal[i]
 
-        # 60 mins interval
-        # 15 mins duration
         interval = next_start - prev_end
-        chunks = interval // duration
-        current = prev_end
 
-        for i in range(chunks):
-            free_time.append([current, current+duration])
-            current += duration
+        if interval >= duration:
+            free_time.append([prev_end, next_start])
 
     return free_time
 
@@ -117,3 +112,4 @@ if __name__ == '__main__':
     duration = 30 
 
     res = calendar_matching(c1, db1, c2, db2, duration)
+    print(f'res {res}')
