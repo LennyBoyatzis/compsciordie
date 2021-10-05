@@ -1,45 +1,37 @@
-def get_prev_smaller_idx(array, i):
-    for j in range(i, -1, -1):
-        if array[j] < array[i]:
-            return j
-    return i
+def get_sequence(array, sequences, curr_idx):
+    sequence = []
 
+    while curr_idx:
+        sequence.append(array[curr_idx])
+        curr_idx = sequences[curr_idx]
 
-def get_max_subsequence(array, i):
-    indices = [i]
-    prev_val = array[i]
-
-    for j in range(i, -1, -1):
-        if array[j] < prev_val:
-            indices.append(j)
-            prev_val = array[j]
-
-    print(f'indices {indices}')
-    return [array[i] for i in indices[::-1]]
-
-
+    return list(reversed(sequence))
+        
 def max_sum_inc_sub(array):
     size = len(array)
-    sums = [0] * size
-    sums[0] = array[0]
+    sequences = [None for num in array]
+    sums = [num for num in array]
+    max_idx = 0
 
-    for i in range(1, size):
-        num = array[i]
-        prev_num_idx = get_prev_smaller_idx(array, i)
-        sums[i] = num + sums[prev_num_idx]
+    for i in range(size):
+        curr = array[i]
+        for j in range(0, i):
+            prev = array[j]
+            if prev < curr and sums[j] + curr >= sums[i]:
+                sums[i] = sums[j] + curr
+                sequences[i] = j
+        if sums[i] >= sums[max_idx]:
+            max_idx = i
 
-    max_sum = max(sums)
-    max_index = sums.index(max_sum)
-
-    print(f'max_sum {max_sum}')
-    print(f'max_index {max_index}')
-
-    max_subsequence = get_max_subsequence(array, max_index)
-
-    return [max_sum, max_subsequence]
+    sequence = get_sequence(array, sequences, max_idx)
+    return [sums[max_idx], sequence]
 
 
 if __name__ == '__main__':
     array = [10, 70, 20, 30, 50, 11, 30]
+    res = max_sum_inc_sub(array)
+    print(f'res {res}')
+
+    array = [10, 15, 4, 5, 11, 14, 31, 25, 31, 23, 25, 31, 50]
     res = max_sum_inc_sub(array)
     print(f'res {res}')
