@@ -1,3 +1,6 @@
+import numpy as np
+
+
 def find_max_value(n, stacks):
     num_stacks = len(stacks)
 
@@ -11,11 +14,14 @@ def find_max_value(n, stacks):
         for j in range(n):
             for k in range(min(j, len(stack))):
                 dp[i+1][j] = max(dp[i+1][j], stacks[i][k] + dp[i][j-k]) 
+
+    print(np.matrix(dp))
     
+
     # result = float('-inf')
 
     # for i in range(n+1):
-        # result = max(result, dp[num_stacks][i])
+    #     result = max(result, dp[num_stacks][i])
 
     # return result
 
@@ -26,6 +32,6 @@ if __name__ == '__main__':
         [4, 2, 4, 1000],
         [1, 40, 1]]
 
-    N = 3
+    N = 1 
     res = find_max_value(N, stacks)
     print(f'res {res}')

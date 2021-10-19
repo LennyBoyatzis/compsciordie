@@ -1,12 +1,12 @@
 def get_max_value(n, stacks):
     max_val = 0
     stack_sizes = [len(stack) for stack in stacks]
-    stack_heads = [0 for _ in range(len(stacks))]
+    stack_tops = [0 for _ in range(len(stacks))]
 
     # Note arrays in python are passed by reference
     # Pass a copy of the array to ensure each recursive call has its unique
     # stack_heads array
-    def search(n, path_sum, stack_heads):
+    def search(n, path_sum, stack_pointers):
         nonlocal max_val
 
         if n == 0:
@@ -14,14 +14,15 @@ def get_max_value(n, stacks):
             return
 
         for i in range(len(stacks)):
-            has_capacity = stack_heads[i] < stack_sizes[i]
+            has_capacity = stack_pointers[i] < stack_sizes[i]
             if has_capacity:
-                print(stack_heads)
-                value = stacks[i][stack_heads[i]]
-                stack_heads[i] += 1
-                search(n-1, path_sum + value, stack_heads[:])
+                value = stacks[i][stack_pointers[i]]
+                stack_pointers_copy = stack_pointers[:]
+                stack_pointers_copy[i] += 1
 
-    search(n, 0, stack_heads)
+                search(n-1, path_sum + value, stack_pointers_copy)
+
+    search(n, 0, stack_tops)
     return max_val
 
 
@@ -47,6 +48,10 @@ if __name__ == '__main__':
         [2000, 2, 3, 1],
         [10, 1, 4]]
 
+    res = get_max_value(1, stacks)
+    print(f'res {res}')
+    assert res == 2000
+
     res = get_max_value(2, stacks)
     print(f'res {res}')
     assert res == 2010
@@ -55,6 +60,6 @@ if __name__ == '__main__':
     print(f'res {res}')
     assert res == 2012
 
-    # res = get_max_value(4, stacks)
-    # print(f'res {res}')
-    # assert res == 2102
+    res = get_max_value(4, stacks)
+    print(f'res {res}')
+    assert res == 2102
