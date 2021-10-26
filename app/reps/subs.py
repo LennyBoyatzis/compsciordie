@@ -55,11 +55,16 @@ def is_subarray(s1: List[int], s2: List[int]) -> bool:
     return False
 
 
+def iter_test(s1, s2):
+    it = iter(s1)
+    'd' in it # iterates up until d, if using the iterator after will continue e, f, g, h, i, j
+    return it
+
+
 def is_subsequence(s1: str, s2: str) -> bool:
     """Determines if s2 is a subsequence of s1"""
     it = iter(s1)
     return all(c in it for c in s2)
-
 
 
 if __name__ == '__main__':
@@ -67,7 +72,7 @@ if __name__ == '__main__':
     s2 = [3, 0, 5, 1] 
 
     s1 = string.ascii_lowercase
-    s2 = 'dae'
+    s2 = 'dfj'
 
     res = is_subsequence(s1, s2)
-    print(f'res {res}')
+    print(f'res: {res}')
