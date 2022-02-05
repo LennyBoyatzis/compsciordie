@@ -10,6 +10,7 @@
 # From every node in the tree we traverse it and calculate the inform time
 # until we reach the parent
 
+
 def num_of_mins(n, head_id, manager, inform_time):
     def dfs(i):
         if manager[i] != -1:

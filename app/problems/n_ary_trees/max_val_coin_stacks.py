@@ -1,3 +1,7 @@
+# O/1 Knapsack
+# Coin Change
+# Write Brute Force
+
 def get_max_value(n, stacks):
     max_val = 0
     stack_sizes = [len(stack) for stack in stacks]
