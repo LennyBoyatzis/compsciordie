@@ -19,13 +19,6 @@ def reverse_stack(stack):
         reverse_stack(stack)
 
 
-
-
-
-
-    pass
-
-
 if __name__ == '__main__':
     nums = [8, 5, 3, 2] # 8 is top
     stack = Stack()
