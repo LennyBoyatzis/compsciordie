@@ -11,7 +11,24 @@ def pascals_triangle(row_index):
 
         line += [1]
 
-    return line
+        return line
+
+
+def get_num(row, col):
+    if row == 0 or col == 0 or row == col:
+        return 1
+    return get_num(row-1, col-1) + get_num(row-1, col)
+
+
+def pascals_triangle_brute_force(row_index):
+    ans = []
+
+    for col in range(row_index):
+        ans.append(get_num(row_index, col))
+
+    return ans
+
+    
 
 
 if __name__ == '__main__':
