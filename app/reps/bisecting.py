@@ -21,9 +21,9 @@ def test_bisect(arr):
 
     # NOTE: Duplicates Scenario
     duplicates_arr = [1, 1, 2, 2, 2, 2, 3, 7, 12]
-    bisect.bisect(duplicates_arr, 10) # 6, defaults to bisect right 
-    bisect.bisect_left(duplicates_arr, 10) # 2, index position of where the element would be inserted
-    bisect.bisect_right(duplicates_arr, 10) # 6, index position of where the element would be inserted
+    bisect.bisect(duplicates_arr, 2) # 6, defaults to bisect right 
+    bisect.bisect_left(duplicates_arr, 2) # 2, index position of where the element would be inserted
+    bisect.bisect_right(duplicates_arr, 2) # 6, index position of where the element would be inserted
 
 
 def test_insort(arr):
@@ -37,9 +37,9 @@ def test_insort(arr):
 
     # NOTE: Duplicates Scenario
     duplicates_arr = [1, 1, 2, 2, 2, 2, 3, 7, 12]
-    bisect.insort(duplicates_arr, 10) # [1, 1, 2, 2, 2, 2, "--2--", 3, 7, 12] # defaults to insort_right
-    bisect.insort_left(duplicates_arr, 10) # [1, 1, "--2--", 2, 2, 2, 2, 3, 7, 12]
-    bisect.insort_right(duplicates_arr, 10) # [1, 1, 2, 2, 2, 2, "--2--", 3, 7, 12]
+    bisect.insort(duplicates_arr, 2) # [1, 1, 2, 2, 2, 2, "--2--", 3, 7, 12] # defaults to insort_right
+    bisect.insort_left(duplicates_arr, 2) # [1, 1, "--2--", 2, 2, 2, 2, 3, 7, 12]
+    bisect.insort_right(duplicates_arr, 2) # [1, 1, 2, 2, 2, 2, "--2--", 3, 7, 12]
 
 
 if __name__ == '__main__':
