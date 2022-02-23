@@ -36,7 +36,6 @@ def search(trie, word):
 if __name__ == '__main__':
     words = ['cat', 'car', 'dog', 'pickle', 'pick']
     trie = build_trie(words)
-    print(f'trie {trie}')
 
     contains_node = search(trie, 'do')
     print(f'contains_node {contains_node}')

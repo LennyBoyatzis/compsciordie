@@ -18,6 +18,7 @@ def binary_search(nums):
 
 if __name__ == '__main__':
     # Goal is the find peak
-    nums = [1, 2, 3, 5, 6, 7, 4, 3]
+    # nums = [1, 2, 3, 5, 6, 7, 4, 3]
+    nums = [4, 5, 6, 7, 8, 1, 2, 3]
     res = binary_search(nums)
     print(f'result {res}')
